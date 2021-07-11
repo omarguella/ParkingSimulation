@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>TeamID31</groupId>
+  <groupId>Team-ID-31</groupId>
   <artifactId>ParkhausSimulation-projekt</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
@@ -16,12 +16,6 @@
             <artifactId>javaee-api</artifactId>
             <version>8.0.1</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -44,6 +38,17 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.1</version>
             </plugin>
+            <plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.4.0.905</version>
+			</plugin>
+			<!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.1</version>
+			</plugin>
         </plugins>
     </build>
     
