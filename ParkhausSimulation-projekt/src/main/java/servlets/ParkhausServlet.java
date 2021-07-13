@@ -47,6 +47,27 @@ public class ParkhausServlet extends HttpServlet {
 
 
 
+    private double getPersistenAverageParkgebuhren() {
+        double average;
+        ServletContext application = getApplication();
+        average = (double) application.getAttribute("averageParkgebuhren");
+        if (average == 0) // double ==null
+        {
+            average = 0.0;
+        }
+        return average;
+    }
+
+    private Float getPersistentSum() {
+        Float sum;
+        ServletContext application = getApplication();
+        sum = (Float) application.getAttribute("sum");
+        if (sum == null) {
+            sum = 0.0f;
+        }
+        return sum;
+    }
+
 	private String getPersistentTicketNummer() {
 
         ServletContext application = getApplication();
