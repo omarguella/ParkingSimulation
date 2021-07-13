@@ -47,7 +47,34 @@ public class ParkhausServlet extends HttpServlet {
 
 
 
+	private String getPersistentTicketNummer() {
 
+        ServletContext application = getApplication();
+        ticketNummer = (String) application.getAttribute("ticketNummer");
+        if (ticketNummer.length() == 0) {
+            ticketNummer = "";
+        }
+        return ticketNummer;
+    }
+
+    private Float getPersistentAverageParkDauer() {
+        Float dauer;
+        ServletContext application = getApplication();
+        dauer = (Float) application.getAttribute("averageParkDauer");
+        if (dauer == null) {
+            dauer = 0.0f;
+        }
+        return dauer;
+    }
+
+    private Float getPersistentteuerstesTicket() {
+
+        ServletContext application = getApplication();
+        teuerstesTicket = (Float) application.getAttribute("teuerstesTicket");
+        if (teuerstesTicket == null)
+            teuerstesTicket = 0.0f;
+        return teuerstesTicket;
+    }
 private static String getBody(HttpServletRequest request) throws IOException {
 	StringBuilder stringBuilder = new StringBuilder();
 	BufferedReader bufferedReader = null;
