@@ -56,9 +56,77 @@ public class ParkhausServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String[] requestParamString = request.getQueryString().split("=");
+		String command = requestParamString[0];
+		String param = requestParamString[1];
+
+		
+		// CHART 3 Anzahl  Type Fahrzeuge LINIE CHART
+
+		if ("cmd".equals(command) && "AnzahlTypeFahrzeuge".equals(param)) {
+			response.setContentType("text/plain");
+			Map<String, Long> counts = cars.stream()
+					.collect(Collectors.groupingBy(Car::getType, Collectors.counting()));
+			String label = counts.keySet().stream().collect(Collectors.joining("\", \"", "\"", "\""));
+			String value = counts.values().stream().map(v -> Long.toString(v))
+					.collect(Collectors.joining(", ", "", ""));
+
+			response.getWriter()
+					.println("{" + " \"layout\":{ \"title\" : \"Anzahl jeder Fahrzeugtyp\" } " + " ,\"data\": [" + " {"
+							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"line\""
+							+ " ,\"title\": \"Chart of .......\"" + " }" + " ]" + "}");
+
+		} 
+		// CHART 4 bar Stosszeiten
+
+		if ("cmd".equals(command) && "Stosszeiten".equals(param)) {
+			response.setContentType("text/plain");
+			 String label=""; String value="";
+			    for(int i=6 ;i<25;i++){
+			    	label =label+"\""+i+"H\",";
+			    	value=value+Time[i]+",";
+			        }
+			    label=label.substring(0,label.length()-1);
+			    value=value.substring(0,value.length()-1);
+
+
+
+			    
+			response.getWriter()
+					.println("{" + " \"layout\":{ \"title\" : \"Stosszeiten zwischen 6H - 24H\" } " + " ,\"data\": [" + " {"
+							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"bar\""
+							+ " ,\"title\": \"Chart of Capacity\"" + " }" + " ]" + "}");
+
+		} 
+if ("cmd".equals(command) && "Hotline".equals(param)) {
+			
+			response.getWriter().println("<br/>"
+					+ "<p style=\"font-weight: Georgia;\">Falls Sie Fragen oder Reklamation haben,konnen Sie sich gern an uns wenden   :</p>"
+					+ "<p style=\"font-weight: Brush Script MT;\">Unsere Kontakte   :</p>"
+					+ "<p style=\"font-weight: Georgia;\">Mail adresse: omar.guella@smail.inf.h-brs.de </p>"
+					+ "<p style=\"font-weight: Georgia;\">Mail adresse: zied.sassi@smail.inf.h-brs.de </p>"
+					+ "<p style=\"font-weight: Georgia;\">Mail adresse: Abagar2s@smail.inf.h-brs.de </p>");
+		
+}
+		// CHART 5 Einkommen Per Kategorie BOX CHART
+
+		
+		if ("cmd".equals(command) && "EinkommenPerKategorie".equals(param)) {
+			response.setContentType("text/plain");
+			Map<String, Long> counts = cars.stream()
+					.collect(Collectors.groupingBy(Car::getKategorie, Collectors.counting()));
+			String label = counts.keySet().stream().collect(Collectors.joining("\", \"", "\"", "\""));
+			String value = String.valueOf(sumFrau) + ',' + String.valueOf(sumBehindert) + ','
+					+ String.valueOf(sumFirmenKunden) + ',' + String.valueOf(sumAndere);
+
+			response.getWriter()
+					.println("{" + " \"layout\":{ \"title\" : \"Einkommen Pro Kategorie\" } " + " ,\"data\": [" + " {"
+							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"box\""
+							+ " ,\"title\": \"Chart of .......\"" + " }" + " ]" + "}");
+
+		} 
 	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
