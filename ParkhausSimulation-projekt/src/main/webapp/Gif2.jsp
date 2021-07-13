@@ -22,12 +22,12 @@ img {
 
 <p style=" font-family: serif ;font-size: 30px;text-align: center;"> Diese Ticketnummer hat eine tolle Überraschung : <% Object b = application.getAttribute("ticketNummer").toString(); %>   <%=b%></p>
 
-<p style=" font-family: Copperplate ;font-size: 50px; text-decoration: underline;  text-align: center;  text-shadow: 2px 2px red;"> 2 Stunde KOSTENLOS PARKEN </p>
+<p style=" font-family: Copperplate ;font-size: 50px; text-decoration: underline;  text-align: center;  text-shadow: 2px 2px red;"> 12 Stunde KOSTENLOSE PARKEN </p>
 
 <p style=" font-family: Lucida Handwriting;font-size: 50px;   color: red;">Ticket Informationen :</p>
 
 <p style="font-weight: bold;font-size: 30px;">Ticket Preis : <% String a = application.getAttribute("teuerstesTicket").toString();
-	Float f = Float.parseFloat(a)/100 ;  String s=String.valueOf(f) ;  s=s+" EURO"; %> <%=s%></p>
+	Float f = Float.parseFloat(a)/100 ; String s=String.valueOf(f) ;  s=s+" EURO"; %> <%=s%></p>
 
 	<p style="font-weight: bold;font-size: 30px;">Fahrzeugtyp : <% String d = application.getAttribute("Fahrzeugtyp").toString();
    %> <%=d%></p>
