@@ -23,7 +23,6 @@
   transition-duration: 0.4s;
   align-content: right ;
 }
-
 .button:hover {
   background-color: #4CAF50; /* Green */
   color: white;
@@ -40,7 +39,6 @@
 		</button>
 	</a>
 <ccm-parkhaus-10-0-2 key='{"name":"CarHome","max":10,"license_max":"","vehicle_types":[],"client_categories":["Behindert","Frau","Andere","Firmenkunden"],"delay":100,"open_from":6,"open_to":24,"simulation_speed":10,
-
 "server_url":"http://localhost:8080/ParkhausSimulation-projekt/ParkhausServlet",
 "hide_table":false,"extra_buttons":[{"extra_class":"TarifInformationen","extra_inner":"TarifInformationen","extra_popup_title":"TarifInformationen"},
 {"extra_class":"Hotline","extra_inner":"Hotline","extra_popup_title":"Hotline"}],

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.io.*;
 
@@ -18,9 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import Classes.Car;
 
 /**
- * Servlet implementation class ParkhausServlet
+ * Servlet implementation class DemoServlet
  */
 @WebServlet("/ParkhausServlet")
+@ManagedBean
 public class ParkhausServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -36,19 +38,18 @@ public class ParkhausServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-
-	public static String ticketNummer;
-
 	int[] Slot;
 	private int anzahleave = 0;
 	private int anzahlBesucher = 0;
 	private List<Car> cars = new ArrayList<Car>();
-	int[] Time = new int[25];
+	public final int[] time = new int[25];
 	private String sumDauer = "000";
 	public static Float teuerstesTicket;
 	public static String KundeMax;
 	public static String Fahrzeugtyp;
 	public static String MatrikelMax;
+	public static String ticketNummer;
+
 	private int sumFrau = 0;
 	private int sumBehindert = 0;
 	private int sumAndere = 0;
@@ -74,25 +75,6 @@ public class ParkhausServlet extends HttpServlet {
 
 		}
 
-		// Get teuerstesTicket
-
-		if ("cmd".equals(command) && "teuerstesTicket".equals(param)) {
-			Float a = getPersistentteuerstesTicket() / 100;
-			String b = getPersistentTicketNummer();
-			response.setContentType("text/html");
-			PrintWriter out = response.getWriter();
-			String str = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Das teurstes Ticket kostet :"
-					+ String.valueOf(a) + "Euro und Die Ticketnummer lautet : " + b;
-			out.println(str + "\n");
-			response.getWriter().println("<br/>"
-					+ "<p style=\"font-weight: bold;\">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
-					+ "Parkticket verschenken :</p>"
-					+ "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
-					+ "<button name=\"good\" onclick=\"location.href='Gif2.jsp'\">2h</button>"
-					+ "<button name=\"good\" onclick=\"location.href='Gif12.jsp'\">12h</button>"
-					+ "<button name=\"good\" onclick=\"location.href='Gif24.jsp'\">24h</button>" + "</p>");
-		}
-			
 		// Get avrageParkgebuhren
 		if ("cmd".equals(command) && "averageParkgebuhren".equals(param)) {
 			double avr = getPersistenAverageParkgebuhren();
@@ -113,6 +95,27 @@ public class ParkhausServlet extends HttpServlet {
 			String str = String.valueOf(a) + " Minute Pro Kunde";
 			out.println("&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + str);
 		}
+
+		// Get teuerstesTicket
+
+		if ("cmd".equals(command) && "teuerstesTicket".equals(param)) {
+			Float a = getPersistentteuerstesTicket() / 100;
+			String b = getPersistentTicketNummer();
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			String str = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Das teurstes Ticket kostet :"
+					+ String.valueOf(a) + "Euro und Die Ticketnummer lautet : " + b;
+			out.println(str + "\n");
+			response.getWriter().println("<br/>"
+					+ "<p style=\"font-weight: bold;\">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
+					+ "Parkticket verschenken :</p>"
+					+ "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
+					+ "<button name=\"good\" onclick=\"location.href='Gif2.jsp'\">2h</button>"
+					+ "<button name=\"good\" onclick=\"location.href='Gif12.jsp'\">12h</button>"
+					+ "<button name=\"good\" onclick=\"location.href='Gif24.jsp'\">24h</button>" + "</p>");
+
+		}
+
 		if ("cmd".equals(command) && "TarifInformationen".equals(param)) {
 
 			response.getWriter().println("<br/>"
@@ -201,7 +204,6 @@ public class ParkhausServlet extends HttpServlet {
 							+ " ,\"title\": \"Chart of .......\"" + " }" + " ]" + "}");
 
 		}
-		// CHART 4 bar Stosszeiten
 
 		if ("cmd".equals(command) && "Stosszeiten".equals(param)) {
 			response.setContentType("text/plain");
@@ -209,10 +211,12 @@ public class ParkhausServlet extends HttpServlet {
 			String value = "";
 			for (int i = 6; i < 25; i++) {
 				label = label + "\"" + i + "H\",";
-				value = value + Time[i] + ",";
+				value = value + time[i] + ",";
 			}
 			label = label.substring(0, label.length() - 1);
+
 			value = value.substring(0, value.length() - 1);
+
 
 			response.getWriter()
 					.println("{" + " \"layout\":{ \"title\" : \"Stosszeiten zwischen 6H - 24H\" } " + " ,\"data\": ["
@@ -220,6 +224,7 @@ public class ParkhausServlet extends HttpServlet {
 							+ " ,\"title\": \"Chart of Capacity\"" + " }" + " ]" + "}");
 
 		}
+		
 		if ("cmd".equals(command) && "Hotline".equals(param)) {
 
 			response.getWriter().println("<br/>"
@@ -230,7 +235,7 @@ public class ParkhausServlet extends HttpServlet {
 					+ "<p style=\"font-weight: Georgia;\">Mail adresse: Abagar2s@smail.inf.h-brs.de </p>");
 
 		}
-		// CHART 5 Einkommen Per Kategorie BOX CHART
+		// CHART 4 Einkommen Per Kategorie BOX CHART
 
 		if ("cmd".equals(command) && "EinkommenPerKategorie".equals(param)) {
 			response.setContentType("text/plain");
@@ -259,14 +264,15 @@ public class ParkhausServlet extends HttpServlet {
 		String[] params = body.split(",");
 		System.out.println(body);
 		String event = params[0];
-
 		// Beim Enter add new car und anzahl Besucher steigt
 		if ("enter".equals(event)) {
 			this.cars.add(new Car(Integer.parseInt(params[1]), null, null, params[8], params[9], params[5],
 					"Parkplatz Nummer : " + params[7], params[10]));
 			anzahlBesucher++;
-			int randomNum = 6 + (int) (Math.random() * 24);
-			Time[randomNum]++;
+			Random random = new Random();
+			int randomNum = random.nextInt(24 + 1 - 6) + 6;
+			time[randomNum]++;
+
 		}
 
 		// Beim Leave Update the dauer and price of the car
@@ -427,27 +433,6 @@ public class ParkhausServlet extends HttpServlet {
 		return getServletConfig().getServletContext();
 	}
 
-	private double getPersistenAverageParkgebuhren() {
-		double average;
-		ServletContext application = getApplication();
-		average = (double) application.getAttribute("averageParkgebuhren");
-		if (average == 0) // double ==null
-		{
-			average = 0.0;
-		}
-		return average;
-	}
-
-	private Float getPersistentSum() {
-		Float sum;
-		ServletContext application = getApplication();
-		sum = (Float) application.getAttribute("sum");
-		if (sum == null) {
-			sum = 0.0f;
-		}
-		return sum;
-	}
-
 	private String getPersistentTicketNummer() {
 
 		ServletContext application = getApplication();
@@ -476,7 +461,58 @@ public class ParkhausServlet extends HttpServlet {
 			teuerstesTicket = 0.0f;
 		return teuerstesTicket;
 	}
-	
+
+	private double getPersistenAverageParkgebuhren() {
+		double average;
+		ServletContext application = getApplication();
+		average = (double) application.getAttribute("averageParkgebuhren");
+		if (average == 0) // double ==null
+		{
+			average = 0.0;
+		}
+		return average;
+	}
+
+	private Float getPersistentSum() {
+		Float sum;
+		ServletContext application = getApplication();
+		sum = (Float) application.getAttribute("sum");
+		if (sum == null) {
+			sum = 0.0f;
+		}
+		return sum;
+	}
+
+	private String getPersistentMatikelMax() {
+
+		ServletContext application = getApplication();
+		MatrikelMax = (String) application.getAttribute("MatrikelMax");
+		if (MatrikelMax.length() == 0) {
+			MatrikelMax = "";
+		}
+		return MatrikelMax;
+	}
+
+	private String getPersistentFahrzeugtyp() {
+
+		ServletContext application = getApplication();
+		Fahrzeugtyp = (String) application.getAttribute("Fahrzeugtyp");
+		if (Fahrzeugtyp.length() == 0) {
+			Fahrzeugtyp = "";
+		}
+		return Fahrzeugtyp;
+	}
+
+	private String getPersistentKundeMax() {
+
+		ServletContext application = getApplication();
+		KundeMax = (String) application.getAttribute("KundeMax");
+		if (KundeMax.length() == 0) {
+			KundeMax = "";
+		}
+		return KundeMax;
+	}
+
 	private void SlotStatistiken(String slot, String key) {
 		String s = slot;
 		int max = 0;

@@ -44,7 +44,7 @@
 		</button>
 	</a>
 
- <ccm-parkhaus-10-5-6 server_url="http://localhost:8080/parkhaus-projekt/ParkhausServlet"
+ <ccm-parkhaus-10-5-6 server_url="http://localhost:8080/ParkhausSimulation-projekt/ParkhausServlet"
 		client_categories='["Frau","Behindert","Andere","Firmenkunden"]'
 		extra_buttons='["Einkommen","averageParkgebuhren","averageParkDauer","teuerstesTicket"]'
 		extra_charts='["AnzahlBesucherPerKategorie","EinkommenPerKategorie","BeliebteParkplatze","AnzahlTypeFahrzeuge"]'
