@@ -67,7 +67,6 @@ public class Car implements CarIF {
 	public String getTicketNummer() {
 		return TicketNummer;
 	}
-
 	@Override
 	public void setTicketNummer(String ticketNummer) {
 		this.TicketNummer = ticketNummer;
