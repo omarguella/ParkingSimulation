@@ -59,7 +59,99 @@ public class ParkhausServlet extends HttpServlet {
 		String[] requestParamString = request.getQueryString().split("=");
 		String command = requestParamString[0];
 		String param = requestParamString[1];
+		
+		
+		// Get avrageParkgebuhren
+				if ("cmd".equals(command) && "averageParkgebuhren".equals(param)) {
+					double avr = getPersistenAverageParkgebuhren();
+					avr = (int) (Math.round(avr * 100)) / 100.0;
+					response.setContentType("text/html");
+					PrintWriter out = response.getWriter();
+					String str = String.valueOf(avr) + " Euro Pro Kunde";
+					out.println("&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + str);
+				}
 
+				// Get averageParkDauer
+				if ("cmd".equals(command) && "averageParkDauer".equals(param)) {
+
+					Float a = getPersistentAverageParkDauer();
+
+					response.setContentType("text/html");
+					PrintWriter out = response.getWriter();
+					String str = String.valueOf(a) + " Minute Pro Kunde";
+					out.println("&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + str);
+				} 
+		if ("cmd".equals(command) && "TarifInformationen".equals(param)) {
+			
+			response.getWriter().println("<br/>"
+					+ "<p style=\"font-weight: bold;\">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
+					+ "Tarif Preise  :</p>"
+					+ "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
+
+					+ "<button name=\"good\" onclick=\"location.href='FrauPreise.jsp'\">Frau</button>"
+					+ "<button name=\"good\" onclick=\"location.href='BehindertPreise.jsp'\">Behidert</button>"
+					+ "<button name=\"good\" onclick=\"location.href='FirmenKunden.jsp'\">Firmenkunden</button>"
+					+ "<button name=\"good\" onclick=\"location.href='AnderePreise.jsp'\">Andere</button>" );
+
+		}
+
+		//CHART 1 BeliebteParkplatze PIE CHART
+		if ("cmd".equals(command) && "BeliebteParkplatze".equals(param)) {
+			response.setContentType("text/plain");
+
+			Map<String, Long> counts = cars.stream()
+					.collect(Collectors.groupingBy(Car::getSlot, Collectors.counting()));
+			String slot = counts.keySet().stream().collect(Collectors.joining("\", \"", "\"", "\""));
+			String key = counts.values().stream().map(v -> Long.toString(v)).collect(Collectors.joining(",", "", ""));
+
+			SlotStatistiken(slot, key);
+
+			String lab = "";
+			String val = "";
+			// Die Erste Beste 4 ParckPlatze
+			int k = 4;
+			while (k != 0) {
+				int maxSlot = 0;
+				int maxI = 0;
+
+				for (int i = 1; i < Slot.length; i++) {
+					if (Slot[i] > maxSlot) {
+						maxSlot = Slot[i];
+						maxI = i;
+					}
+				}
+				Slot[maxI] = 0;
+				if (maxSlot != 0) {
+					lab = lab + maxSlot + ",";
+					val = val + "\"Parkplatz Nummer : " + maxI + "\",";
+				}
+				--k;
+			}
+
+			lab = lab.substring(0, lab.length() - 1);
+			val = val.substring(0, val.length() - 1);
+
+			response.getWriter()
+					.println("{" + " \"layout\":{ \"title\" : \"Die 4 Beliebte Parkplatze\" } " + " ,\"data\": [" + " {"
+							+ " \"labels\": [" + val + "]," + " \"values\": [" + lab + " ]," + " \"type\": \"pie\""
+							+ " }" + " ]" + "}");
+		} 
+		// CHART 2 Anzahl Besucher Per Kategorie BAR CHART
+
+		if ("cmd".equals(command) && "AnzahlBesucherPerKategorie".equals(param)) {
+			response.setContentType("text/plain");
+			Map<String, Long> counts = cars.stream()
+					.collect(Collectors.groupingBy(Car::getKategorie, Collectors.counting()));
+			String label = counts.keySet().stream().collect(Collectors.joining("\", \"", "\"", "\""));
+			String value = counts.values().stream().map(v -> Long.toString(v))
+					.collect(Collectors.joining(",\n ", "", ""));
+
+			response.getWriter()
+					.println("{" + " \"layout\":{ \"title\" : \"Anzahl Besucher in jeder Kategorie\" } " + " ,\"data\": [" + " {"
+							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"bar\"" + " }"
+							+ " ]" + "}");
+			
+		} 
 		
 		// CHART 3 Anzahl  Type Fahrzeuge LINIE CHART
 
