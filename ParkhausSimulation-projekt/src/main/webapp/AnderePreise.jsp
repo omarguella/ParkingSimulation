@@ -10,6 +10,7 @@
   width: 100%;
 }
 
+
 #customers td, #customers th {
   border: 1px solid #ddd;
   padding: 8px;

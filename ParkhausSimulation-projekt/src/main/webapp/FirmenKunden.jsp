@@ -19,6 +19,7 @@
 
 #customers tr:hover {background-color: #ddd;}
 
+
 #customers th {
   padding-top: 12px;
   padding-bottom: 12px;
