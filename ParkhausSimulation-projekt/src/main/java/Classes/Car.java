@@ -76,7 +76,6 @@ public class Car implements CarIF {
 	public String getSlot() {
 		return slot;
 	}
-
 	@Override
 	public void setSlot(String slot) {
 		this.slot = slot;
