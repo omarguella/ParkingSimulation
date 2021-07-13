@@ -1,11 +1,21 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.io.*;
+
+import javax.annotation.ManagedBean;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import Classes.Car;
 
 /**
  * Servlet implementation class ParkhausServlet
@@ -87,6 +97,56 @@ public class ParkhausServlet extends HttpServlet {
         }
         return dauer;
     }
+    
+    private void SlotStatistiken(String slot, String key) {
+		String s = slot;
+		int max = 0;
+		String str;
+		while ("" != slot) {
+			if (slot.indexOf(",") == -1) {
+				str = slot.substring(20, slot.length() - 1);
+				slot = "";
+			} else {
+
+				str = slot.substring(20, slot.indexOf(",") - 1);
+				slot = slot.substring(slot.indexOf(",") + 2);
+			}
+
+			int j = Integer.parseInt(str);
+			if (j > max) {
+				max = j;
+			}
+		}
+		Slot = new int[max + 1];
+		for (int i = 0; i <= max; i++) {
+			Slot[i] = 0;
+		}
+
+		while ("" != s) {
+			if (s.indexOf(",") == -1) {
+				str = s.substring(20, s.length() - 1);
+				s = "";
+			} else {
+
+				str = s.substring(20, s.indexOf(",") - 1);
+				s = s.substring(s.indexOf(",") + 2);
+			}
+			int j = Integer.parseInt(str);
+
+			if (key.indexOf(",") == -1) {
+
+				str = key;
+				key = "";
+			} else {
+
+				str = key.substring(0, key.indexOf(","));
+				key = key.substring(key.indexOf(",") + 1);
+			}
+
+			Slot[j] = Integer.parseInt(str);
+		}
+
+	}
 
     private Float getPersistentteuerstesTicket() {
 
