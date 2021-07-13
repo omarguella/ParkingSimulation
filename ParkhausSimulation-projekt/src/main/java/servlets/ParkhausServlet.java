@@ -59,30 +59,62 @@ public class ParkhausServlet extends HttpServlet {
 		String[] requestParamString = request.getQueryString().split("=");
 		String command = requestParamString[0];
 		String param = requestParamString[1];
-		
-		
-		// Get avrageParkgebuhren
-				if ("cmd".equals(command) && "averageParkgebuhren".equals(param)) {
-					double avr = getPersistenAverageParkgebuhren();
-					avr = (int) (Math.round(avr * 100)) / 100.0;
-					response.setContentType("text/html");
-					PrintWriter out = response.getWriter();
-					String str = String.valueOf(avr) + " Euro Pro Kunde";
-					out.println("&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + str);
-				}
 
-				// Get averageParkDauer
-				if ("cmd".equals(command) && "averageParkDauer".equals(param)) {
+		// EINKOMMEN BERECHNEN
 
-					Float a = getPersistentAverageParkDauer();
+		if ("cmd".equals(command) && "Einkommen".equals(param)) {
+			Float sum = getPersistentSum() / 100;
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			String str = String.valueOf(sum) + " Euro";
+			String html = str;
+			out.println(
+					"&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
+							+ html);
 
-					response.setContentType("text/html");
-					PrintWriter out = response.getWriter();
-					String str = String.valueOf(a) + " Minute Pro Kunde";
-					out.println("&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + str);
-				} 
-		if ("cmd".equals(command) && "TarifInformationen".equals(param)) {
+		}
+
+		// Get teuerstesTicket
+
+		if ("cmd".equals(command) && "teuerstesTicket".equals(param)) {
+			Float a = getPersistentteuerstesTicket() / 100;
+			String b = getPersistentTicketNummer();
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			String str = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Das teurstes Ticket kostet :"
+					+ String.valueOf(a) + "Euro und Die Ticketnummer lautet : " + b;
+			out.println(str + "\n");
+			response.getWriter().println("<br/>"
+					+ "<p style=\"font-weight: bold;\">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
+					+ "Parkticket verschenken :</p>"
+					+ "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
+					+ "<button name=\"good\" onclick=\"location.href='Gif2.jsp'\">2h</button>"
+					+ "<button name=\"good\" onclick=\"location.href='Gif12.jsp'\">12h</button>"
+					+ "<button name=\"good\" onclick=\"location.href='Gif24.jsp'\">24h</button>" + "</p>");
+		}
 			
+		// Get avrageParkgebuhren
+		if ("cmd".equals(command) && "averageParkgebuhren".equals(param)) {
+			double avr = getPersistenAverageParkgebuhren();
+			avr = (int) (Math.round(avr * 100)) / 100.0;
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			String str = String.valueOf(avr) + " Euro Pro Kunde";
+			out.println("&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + str);
+		}
+
+		// Get averageParkDauer
+		if ("cmd".equals(command) && "averageParkDauer".equals(param)) {
+
+			Float a = getPersistentAverageParkDauer();
+
+			response.setContentType("text/html");
+			PrintWriter out = response.getWriter();
+			String str = String.valueOf(a) + " Minute Pro Kunde";
+			out.println("&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + str);
+		}
+		if ("cmd".equals(command) && "TarifInformationen".equals(param)) {
+
 			response.getWriter().println("<br/>"
 					+ "<p style=\"font-weight: bold;\">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"
 					+ "Tarif Preise  :</p>"
@@ -91,11 +123,11 @@ public class ParkhausServlet extends HttpServlet {
 					+ "<button name=\"good\" onclick=\"location.href='FrauPreise.jsp'\">Frau</button>"
 					+ "<button name=\"good\" onclick=\"location.href='BehindertPreise.jsp'\">Behidert</button>"
 					+ "<button name=\"good\" onclick=\"location.href='FirmenKunden.jsp'\">Firmenkunden</button>"
-					+ "<button name=\"good\" onclick=\"location.href='AnderePreise.jsp'\">Andere</button>" );
+					+ "<button name=\"good\" onclick=\"location.href='AnderePreise.jsp'\">Andere</button>");
 
 		}
 
-		//CHART 1 BeliebteParkplatze PIE CHART
+		// CHART 1 BeliebteParkplatze PIE CHART
 		if ("cmd".equals(command) && "BeliebteParkplatze".equals(param)) {
 			response.setContentType("text/plain");
 
@@ -135,7 +167,7 @@ public class ParkhausServlet extends HttpServlet {
 					.println("{" + " \"layout\":{ \"title\" : \"Die 4 Beliebte Parkplatze\" } " + " ,\"data\": [" + " {"
 							+ " \"labels\": [" + val + "]," + " \"values\": [" + lab + " ]," + " \"type\": \"pie\""
 							+ " }" + " ]" + "}");
-		} 
+		}
 		// CHART 2 Anzahl Besucher Per Kategorie BAR CHART
 
 		if ("cmd".equals(command) && "AnzahlBesucherPerKategorie".equals(param)) {
@@ -147,13 +179,13 @@ public class ParkhausServlet extends HttpServlet {
 					.collect(Collectors.joining(",\n ", "", ""));
 
 			response.getWriter()
-					.println("{" + " \"layout\":{ \"title\" : \"Anzahl Besucher in jeder Kategorie\" } " + " ,\"data\": [" + " {"
-							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"bar\"" + " }"
-							+ " ]" + "}");
-			
-		} 
-		
-		// CHART 3 Anzahl  Type Fahrzeuge LINIE CHART
+					.println("{" + " \"layout\":{ \"title\" : \"Anzahl Besucher in jeder Kategorie\" } "
+							+ " ,\"data\": [" + " {" + " \"x\": [" + label + "]," + " \"y\": [" + value + " ],"
+							+ " \"type\": \"bar\"" + " }" + " ]" + "}");
+
+		}
+
+		// CHART 3 Anzahl Type Fahrzeuge LINIE CHART
 
 		if ("cmd".equals(command) && "AnzahlTypeFahrzeuge".equals(param)) {
 			response.setContentType("text/plain");
@@ -168,41 +200,38 @@ public class ParkhausServlet extends HttpServlet {
 							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"line\""
 							+ " ,\"title\": \"Chart of .......\"" + " }" + " ]" + "}");
 
-		} 
+		}
 		// CHART 4 bar Stosszeiten
 
 		if ("cmd".equals(command) && "Stosszeiten".equals(param)) {
 			response.setContentType("text/plain");
-			 String label=""; String value="";
-			    for(int i=6 ;i<25;i++){
-			    	label =label+"\""+i+"H\",";
-			    	value=value+Time[i]+",";
-			        }
-			    label=label.substring(0,label.length()-1);
-			    value=value.substring(0,value.length()-1);
+			String label = "";
+			String value = "";
+			for (int i = 6; i < 25; i++) {
+				label = label + "\"" + i + "H\",";
+				value = value + Time[i] + ",";
+			}
+			label = label.substring(0, label.length() - 1);
+			value = value.substring(0, value.length() - 1);
 
-
-
-			    
 			response.getWriter()
-					.println("{" + " \"layout\":{ \"title\" : \"Stosszeiten zwischen 6H - 24H\" } " + " ,\"data\": [" + " {"
-							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"bar\""
+					.println("{" + " \"layout\":{ \"title\" : \"Stosszeiten zwischen 6H - 24H\" } " + " ,\"data\": ["
+							+ " {" + " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"bar\""
 							+ " ,\"title\": \"Chart of Capacity\"" + " }" + " ]" + "}");
 
-		} 
-if ("cmd".equals(command) && "Hotline".equals(param)) {
-			
+		}
+		if ("cmd".equals(command) && "Hotline".equals(param)) {
+
 			response.getWriter().println("<br/>"
 					+ "<p style=\"font-weight: Georgia;\">Falls Sie Fragen oder Reklamation haben,konnen Sie sich gern an uns wenden   :</p>"
 					+ "<p style=\"font-weight: Brush Script MT;\">Unsere Kontakte   :</p>"
 					+ "<p style=\"font-weight: Georgia;\">Mail adresse: omar.guella@smail.inf.h-brs.de </p>"
 					+ "<p style=\"font-weight: Georgia;\">Mail adresse: zied.sassi@smail.inf.h-brs.de </p>"
 					+ "<p style=\"font-weight: Georgia;\">Mail adresse: Abagar2s@smail.inf.h-brs.de </p>");
-		
-}
+
+		}
 		// CHART 5 Einkommen Per Kategorie BOX CHART
 
-		
 		if ("cmd".equals(command) && "EinkommenPerKategorie".equals(param)) {
 			response.setContentType("text/plain");
 			Map<String, Long> counts = cars.stream()
@@ -216,9 +245,8 @@ if ("cmd".equals(command) && "Hotline".equals(param)) {
 							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"box\""
 							+ " ,\"title\": \"Chart of .......\"" + " }" + " ]" + "}");
 
-		} 
+		}
 	}
-	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
