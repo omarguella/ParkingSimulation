@@ -247,8 +247,8 @@ public class ParkhausServlet extends HttpServlet {
 
 			response.getWriter()
 					.println("{" + " \"layout\":{ \"title\" : \"Einkommen Pro Kategorie\" } " + " ,\"data\": [" + " {"
-							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"box\""
-							+ " ,\"title\": \"Chart of .......\"" + " }" + " ]" + "}");
+							+ " \"x\": [" + label + "]," + " \"y\": [" + value + " ]," + " \"type\": \"box\""+
+							" }" + " ]" + "}");
 
 		}
 	}

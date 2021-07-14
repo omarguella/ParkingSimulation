@@ -80,11 +80,11 @@ public class Car implements CarIF {
 	public void setSlot(String slot) {
 		this.slot = slot;
 	}
-
+	@Override
 	public String getType() {
 		return type;
 	}
-
+	@Override
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -96,11 +96,12 @@ public class Car implements CarIF {
 		return "Car [ID=" + ID + ", Dauer=" + Dauer + ", price=" + price + ", kategorie=" + kategorie + ", type=" + type
 				+ ", TicketNummer=" + TicketNummer + ", slot=" + slot + ", Matrikel=" + Matrikel + "]";
 	}
-
+	@Override
 	public String getMatrikel() {
 		return Matrikel;
 	}
-
+	
+	@Override
 	public void setMatrikel(String matrikel) {
 		Matrikel = matrikel;
 	}

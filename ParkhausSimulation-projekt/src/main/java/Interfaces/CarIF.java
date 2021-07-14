@@ -30,5 +30,10 @@ public interface CarIF {
 	public String getType();
 
 	public void setType(String type) ;
+	
+	public String getMatrikel() ;
+
+	public void setMatrikel(String matrikel) ;
+
 
 }
