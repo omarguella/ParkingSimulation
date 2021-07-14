@@ -22,7 +22,7 @@ img {
 
 <p style=" font-family: serif ;font-size: 30px;text-align: center;"> Diese Ticketnummer hat eine tolle Überraschung : <% Object b = application.getAttribute("ticketNummer").toString(); %>   <%=b%></p>
 
-<p style=" font-family: Copperplate ;font-size: 50px; text-decoration: underline;  text-align: center;  text-shadow: 2px 2px red;"> 12 Stunde KOSTENLOSE PARKEN </p>
+<p style=" font-family: Copperplate ;font-size: 50px; text-decoration: underline;  text-align: center;  text-shadow: 2px 2px red;"> 2 Stunde KOSTENLOSE PARKEN </p>
 
 <p style=" font-family: Lucida Handwriting;font-size: 50px;   color: red;">Ticket Informationen :</p>
 
