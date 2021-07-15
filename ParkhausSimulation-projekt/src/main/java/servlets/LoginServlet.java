@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
                 rq_user.forward(request, response);
                 break;
             case "wrongID":
-                out.println("Nutzername oder Passwort stimmen nicht mit den gegebenen Daten überein.");
+                out.println("Nutzername oder Passwort stimmen nicht mit den gegebenen Daten uberein.");
                 RequestDispatcher rs_inc = request.getRequestDispatcher("Connect.jsp");
                 rs_inc.include(request, response);
                 break;
